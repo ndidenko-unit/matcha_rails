@@ -2,13 +2,48 @@
 <html>
 <head>
   <title>Matcha</title>
+
   <%= csrf_meta_tags %>
+  <%= action_cable_meta_tag %>
+
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
 </head>
 <body>
-<div class="container">
+<div class="header alert-info">
+  <div class="col-md-9">
+    <h1><%= link_to 'Matcha', root_path %></h1>
+  </div>
+  <div class="col-md-3">
+    <% if user_signed_in? %>
+        <p>Welcome, <%= current_user.email %></p>
+        <p><%= link_to 'User settings', edit_user_registration_path %></p>
+        <p><%= link_to 'Logout', destroy_user_session_path, :method => :delete %></p>
+    <% else %>
+        <p><%= link_to 'Login', new_user_session_path %> or <%= link_to 'Sign up', new_user_registration_path %></p>
+    <% end %>
+  </div>
+</div>
+<div class="col-md-2">
+  <% if notice.present? || alert.present? %>
+      <div class="container">
+        <div class="message-orange">
+          <p class="message-content"><%= notice %><%= alert %></p>
+          <div class="message-timestamp-right"></div>
+        </div>
+      </div>
+  <% end %>
+</div>
+<div class="col-md-8">
   <%= yield %>
+</div>
+<div class="col-md-2"></div>
+<div class="footer">
+  <div class="col-md-10">
+  </div>
+  <div class="col-md-2">
+    <br>by ndidenko<br><br>
+  </div>
 </div>
 </body>
 </html>
