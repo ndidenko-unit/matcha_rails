@@ -8,9 +8,18 @@
 
 password = '5956861'
 1.upto(5) do |i|
-  User.create(
+  @user = User.new(
       email: "user-#{i}@test.com",
       password: password,
       password_confirmation: password
   )
+  @user.skip_confirmation!
+  @user.save
 end
+  @user = User.new(
+    email: "5773480@gmail.com",
+    password: password,
+    password_confirmation: password
+)
+  @user.skip_confirmation!
+  @user.save
