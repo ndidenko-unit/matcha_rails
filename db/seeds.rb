@@ -15,6 +15,7 @@ password = '5956861'
   )
   @user.skip_confirmation!
   @user.save
+  @user.profile = Profile.create(user_id: @user.id, id: @user.id, first_name: "user-#{i}-name", age: 28)
 end
   @user = User.new(
     email: "5773480@gmail.com",
@@ -23,3 +24,4 @@ end
 )
   @user.skip_confirmation!
   @user.save
+@user.profile = Profile.create(user_id: @user.id, id: @user.id, first_name: "name-5773480", age: 28)

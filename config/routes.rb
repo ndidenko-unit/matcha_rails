@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'profiles/edit'
   get 'profiles/update'
   get 'profiles/show'
+  get 'home/index'
   devise_for :users
 
   root 'home#index'
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
   end
 
   resources :profiles
+  resources :friendships
 end
 

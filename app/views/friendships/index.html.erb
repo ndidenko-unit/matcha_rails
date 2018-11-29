@@ -1,0 +1,36 @@
+<h2>Your Friends</h2>
+<ul>
+  <% for user in current_user.friends %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>
+<hr>
+<% for user in @users %>
+  <div class="user">
+    <p>
+      <strong><%= user.email %></strong>
+      <%= link_to "Show Profile", profile_path(user.profile), :method => :get %> |
+      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
+
+      <div class="clear"></div>
+    </p>
+  </div>
+<% end %>
+
+<h2>Your Friends</h2>
+<ul>
+  <% for friendship in current_user.friendships %>
+    <li>
+      <%= h friendship.friend.email %>
+      (<%= link_to "remove", friendship, :method => :delete %>)
+    </li>
+  <% end %>
+</ul>
+<hr>
+
+<h2>Users Who Have Befriended You</h2>
+<ul>
+  <% for user in current_user.inverse_friends %>
+    <li><%= user.email %></li>
+  <% end %>
+</ul>

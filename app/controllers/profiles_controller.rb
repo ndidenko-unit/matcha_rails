@@ -1,10 +1,12 @@
 class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show]
   before_action :set_user_profile, only: [:edit, :update, :destroy]
+
   # GET /profiles
   # GET /profiles.json
   def index
-    @profiles = Profile.all
+    @profiles = Profile.all.where.not(id: current_user.profile.id)
+
   end
 
   # GET /profiles/1
@@ -31,10 +33,10 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       if @profile.save
         format.html { redirect_to @profile, notice: 'Profile was successfully created.' }
-        format.json { render :show, status: :created, location: @profile }
+        # format.json { render :show, status: :created, location: @profile }
       else
         format.html { render :new }
-        format.json { render json: @profile.errors, status: :unprocessable_entity }
+        # format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -46,10 +48,10 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       if @profile.update(profile_params)
         format.html { redirect_to @profile, notice: 'Profile was successfully updated.' }
-        format.json { render :show, status: :ok, location: @profile }
+        # format.json { render :show, status: :ok, location: @profile }
       else
         format.html { render :edit }
-        format.json { render json: @profile.errors, status: :unprocessable_entity }
+        # format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -60,7 +62,7 @@ class ProfilesController < ApplicationController
     @profile.destroy
     respond_to do |format|
       format.html { redirect_to profiles_url, notice: 'Profile was successfully destroyed.' }
-      format.json { head :no_content }
+      # format.json { head :no_content }
     end
   end
 
@@ -71,7 +73,7 @@ class ProfilesController < ApplicationController
     end
 
     def set_user_profile
-      current_user.profile = Profile.create(user_id: current_user.id) unless current_user.profile.present?
+      current_user.profile = Profile.create(user_id: current_user.id, id: current_user.id) unless current_user.profile.present?
       @profile = current_user.profile
     end
     # Never trust parameters from the scary internet, only allow the white list through.
