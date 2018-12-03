@@ -1,36 +1,56 @@
-<h2>Your Friends</h2>
-<ul>
-  <% for user in current_user.friends %>
-    <li><%= user.email %></li>
-  <% end %>
-</ul>
-<hr>
-<% for user in @users %>
-  <div class="user">
-    <p>
-      <strong><%= user.email %></strong>
-      <%= link_to "Show Profile", profile_path(user.profile), :method => :get %> |
-      <%= link_to "Add Friend", friendships_path(:friend_id => user), :method => :post %>
-
-      <div class="clear"></div>
-    </p>
-  </div>
-<% end %>
 
 <h2>Your Friends</h2>
 <ul>
-  <% for friendship in current_user.friendships %>
+  <%= 'Not found' if @friends.count == 0 %>
+  <% for friend in @friends %>
     <li>
-      <%= h friendship.friend.email %>
-      (<%= link_to "remove", friendship, :method => :delete %>)
+      <%= link_to "#{friend.email}", profile_path(friend.profile), method: :get %>
+      (<%= link_to "remove", current_user.friendship_with(friend), method: :delete %>)
     </li>
   <% end %>
 </ul>
 <hr>
-
-<h2>Users Who Have Befriended You</h2>
+<h2>Your requests for friendship</h2>
 <ul>
-  <% for user in current_user.inverse_friends %>
-    <li><%= user.email %></li>
+  <%= 'Not found' if @your_request.count == 0 %>
+  <% for friend in @your_request %>
+    <li>
+      <%= friend.email %>
+      (<%= link_to "remove", current_user.friendship_with(friend), method: :delete %>)
+    </li>
   <% end %>
 </ul>
+<hr>
+<h2>Users who want to be friends with you</h2>
+<ul>
+  <%= 'Not found' if @his_request.count == 0 %>
+  <% for friend in @his_request %>
+    <li>
+      <%= friend.email %>
+      (<%= link_to "Add Friend", friendships_path(friend_id: friend), method: :post %>)
+      (<%= link_to "block", block_friendships_path(block_user: friend), method: :post %>)
+    </li>
+  <% end %>
+</ul>
+<hr>
+<h2>Blocked users</h2>
+<ul>
+  <%= 'Not found' if @your_block.count == 0 %>
+  <% for friend in @your_block %>
+    <li>
+      <%= friend.email %>
+      (<%= link_to "Unblock", unblock_friendships_path(unblock_user: friend), method: :post %>)
+    </li>
+  <% end %>
+</ul>
+<hr>
+<h2>Users who have blocked you</h2>
+<ul>
+  <%= 'Not found' if @his_block.count == 0 %>
+  <% for friend in @his_block %>
+    <li>
+      <%= friend.email %>
+    </li>
+  <% end %>
+</ul>
+<hr>

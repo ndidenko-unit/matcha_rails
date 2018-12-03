@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get 'profiles/show'
-  get 'profiles/edit'
-  get 'profiles/update'
-  get 'profiles/show'
+
   get 'home/index'
+  get '/friendships/:id', to: 'patients#show', as: 'patient'
   devise_for :users
 
   root 'home#index'
@@ -16,6 +14,11 @@ Rails.application.routes.draw do
   end
 
   resources :profiles
-  resources :friendships
+  resources :friendships do
+    collection do
+      post :block
+      post :unblock
+    end
+  end
 end
 

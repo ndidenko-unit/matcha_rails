@@ -12,4 +12,33 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :confirmable,
          :recoverable, :rememberable, :validatable
+
+  def friendship_status(user)
+    if self.inverse_friendships.find_by(user_id: user.id).present? &&
+        self.inverse_friendships.find_by(user_id: user.id).blocked_by_user_id > 0
+      'his block'
+    elsif self.friendships.find_by(friend_id: user.id).present? &&
+        self.friendships.find_by(friend_id: user.id).blocked_by_user_id > 0
+      'your block'
+    elsif self.friendships.find_by(friend_id: user.id).present? &&
+        self.inverse_friendships.find_by(user_id: user.id).present?
+      'friends'
+    elsif self.friendships.find_by(friend_id: user.id).present? &&
+          !self.inverse_friendships.find_by(user_id: user.id).present?
+      'your request'
+    elsif !self.friendships.find_by(friend_id: user.id).present? &&
+        self.inverse_friendships.find_by(user_id: user.id).present?
+      'his request'
+    else
+      'no requests'
+    end
+  end
+
+  def friendship_with(user)
+    # friendship =
+        self.friendships.find_by(friend_id: user.id)
+    # if friendship.nil?
+    #     #   self.inverse_friendships.find_by(user_id: user.id)
+    #     # end
+  end
 end

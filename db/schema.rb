@@ -23,9 +23,10 @@ ActiveRecord::Schema.define(version: 2018_11_29_131903) do
   create_table "friendships", force: :cascade do |t|
     t.integer "user_id"
     t.integer "friend_id"
+    t.integer "blocked_by_user_id", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["friend_id"], name: "index_friendships_on_friend_id", unique: true
+    t.index ["user_id", "friend_id"], name: "index_friendships_on_user_id_and_friend_id", unique: true
   end
 
   create_table "messages", force: :cascade do |t|
